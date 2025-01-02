@@ -8,33 +8,33 @@ import (
 
 func hor(lines string,i,total int) int  {
 	if string(lines[i:i+4]) == "XMAS"{
-		fmt.Println(string(lines[i:i+4]))
 		total++
 	}
 	if string(lines[i:i+4]) == "SAMX"{
-		fmt.Println(string(lines[i:i+4]))
 		total++
 	}
 	return total
 }
 
-func ver(table []string,count,total int) int {
-	xmas := 0
-	for i:=0;i<count;i++ {
-		if string(table[i][9]) == "X" {
-			xmas++
-		} else if string(table[i][9]) == "M" && xmas == 1{
-			xmas++
-		} else if string(table[i][9]) == "A" && xmas == 2{
-			xmas++
-		} else if string(table[i][9]) == "S" && xmas == 3{
-			xmas++
+func ver(table []string,count,i,total int) int {
+	col := []string{}
+	xmas := []string{"X","M","A","S"}
+	for a:=0;a<count;a++ {
+		col = append(col,string(table[a][i]))
+	}
+	for a:=0;a<count;a++{
+		if string(col[a:a+4]) == string(xmas) {
+			total++
 		}
 	}
-	if xmas == 4 {
-		total++
-	}
 	return total
+}
+
+func diag(table []string,count,i int)  {
+	col := []string{}
+	for a:=0;a<count;a++ {
+		col = append(col,string(table[i][a]))
+	}
 }
 
 func main() {
@@ -51,6 +51,9 @@ func main() {
 		table = append(table,lines) 
 		count++
 	}
-	total = total + ver(table,count,total)
+	for i:=0;i<count;i++{
+		total = total + ver(table,count,i,total)
+		diag(table,count,i)
+	}
 	fmt.Println(total)
 }
